@@ -3,11 +3,16 @@ const noteForm = document.querySelector("#note-form");
 const noteInput = document.querySelector("#note-input");
 const noteCategory = document.querySelector("note-category");
 const notesList = document.querySelector ("notes-list");
+const noteCount = document.querySelector ("#note-count");
+const errorMessage = document.querySelector("#error-message");
 
-// 2. State the notes array
+// 2. CONSTANTS
+const MAX_LENGTH = 200;
+
+// 3. State the notes array
 let notes = [];
 
-// 3. Helper Functions
+// 4. Helper Functions
 function formatDate(date) {
   return date.toLocaleString("en-GB", {
     day: "numeric",
@@ -23,7 +28,7 @@ function capitalise(word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
-// 4. Build Note Card
+// 5. Build Note Card
 function createNoteCard(note) {
   const card = document.createElement("li");
   card.className = 'note-card category-${note.category}';
@@ -48,22 +53,62 @@ function createNoteCard(note) {
   deleteBtn.className = "btn-danger delete-btn";
   deleteBtn.textContent = "Delete";
 
+  deleteBtn.addEventListener("click", function() {
+    deleteNote(note.id);
+  });
+
   footer.append(badge, date, deleteBtn);
   card.append(text, footer);
   return card;
 }
 
-// 5. render()
+// 6. render()
 function render() {
-  notesList.textContent = "";
+  notesList.textContent = ""; 
+
   for (const note of notes) {
     notesList.apprehendChild(createNoteCard(note));
   }
+
+  updateCount();
 }
 
-// 6. Add a Note
+// 7. Note Count
+function updateCount() {
+  if (notes.length === 0) {
+    noteCount.textContent = "You have no notes yet.";
+  } else if (notes.length === 1) {
+    noteCount.textContent = "You have 1 note.";
+  } else {
+    noteCount.textContent = 'You have ${notes.length} notes.';
+  }
+}
+
+// 8. Validation Messages
+function showError(message) {
+  errorMessage.textContent = message;
+}
+
+function clearError() {
+  errorMessage.textContent = "";
+}
+
+// 9. Add a Note
 noteForm.addEventListener("submit", function(event) {
   event.preventDefault();
+
+  const text = noteInput.value.trim();
+
+  if (text === "") {
+    showError("Please type a note first.");
+    return;
+  }
+  if (text.lenght > MAX_LENGTH) {
+    showError("Notes must be 200 characters or fewer.");
+    return;
+  }
+
+  clearError();
 
   const newNote = {
     id: Date.now(),
@@ -77,3 +122,11 @@ noteForm.addEventListener("submit", function(event) {
   noteInput.focus();
   render();
 });
+
+//  10. Delete a Note
+function deleteNote(id) {
+  notes = notes.filter((note) => note.id !== id);
+  render();
+}
+
+render();
