@@ -1,22 +1,11 @@
-/* ==========================================================
-   DownNote - style.css
-   Take and Store notes faster, easily and conveniently.
-   ========================================================== */
-
-
-/* 1. RESET
-   border-box means width includes padding and border,
-   so boxes never end up wider than you expect. */
+/* 1. RESET */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-
-/* 2. COLOURS (CSS variables)
-   Every colour lives here. The rest of the file uses var(--name).
-   The dark theme (next block) only redefines these variables. */
+/* 2. COLORS */
 :root {
   color-scheme: light;
 
@@ -44,9 +33,7 @@
   --shadow: 0 6px 20px rgba(27, 29, 42, 0.07);
 }
 
-/* 3. DARK THEME
-   JavaScript adds the class "dark" to the <html> element.
-   Same variable names, new values. */
+/* 3. DARK THEME */
 :root.dark {
   color-scheme: dark;
 
@@ -74,9 +61,7 @@
 }
 
 
-/* 4. BODY
-   Flex column + min-height keeps the footer at the bottom
-   of the screen even when there are no notes. */
+/* 4. BODY */
 body {
   margin: 0;
   min-height: 100vh;
@@ -92,7 +77,7 @@ body {
 
 /* 5. HEADER */
 header {
-  position: sticky; /* stays at the top while you scroll */
+  position: sticky; 
   top: 0;
   z-index: 10;
   background: linear-gradient(135deg, var(--header-start), var(--header-end));
@@ -100,7 +85,6 @@ header {
   padding: 24px 0;
 }
 
-/* Same max-width and side padding as <main>, so the edges line up */
 .header-inner {
   max-width: 700px;
   margin: 0 auto;
@@ -123,7 +107,7 @@ header p {
 }
 
 
-/* 6. MAIN - a centred column, 700px at most */
+/* 6. MAIN - a centred column */
 main {
   flex: 1;
   width: 100%;
@@ -151,8 +135,7 @@ section h2 {
 }
 
 
-/* 7. FORM (Flexbox)
-   The fields sit in a row; the text field grows to fill the space. */
+/* 7. FORM (Flexbox) */
 form {
   display: flex;
   flex-wrap: wrap;
@@ -176,7 +159,6 @@ form {
   min-width: 0;
 }
 
-/* In the search toolbar the search box can shrink to make room for the button */
 .toolbar .field-grow {
   flex: 1 1 0;
 }
@@ -216,8 +198,7 @@ button:focus-visible {
 }
 
 
-/* 8. BUTTONS
-   transition makes the hover change smooth. */
+/* 8. BUTTONS */
 button {
   min-height: 46px;
   padding: 10px 22px;
@@ -312,7 +293,6 @@ button.theme-toggle:hover:not(:disabled) {
   gap: 12px;
 }
 
-/* Each note is a card: padding, border, border-radius and margin (gap) */
 .note-card {
   padding: 14px 16px;
   border: 1px solid var(--border);
@@ -340,7 +320,7 @@ button.theme-toggle:hover:not(:disabled) {
   color: var(--muted);
 }
 
-/* Message shown when the list is empty or a search finds nothing */
+
 .empty-message {
   padding: 24px 12px;
   text-align: center;
@@ -391,8 +371,7 @@ footer p {
 }
 
 
-/* 13. SMALL UTILITY
-   Hides the search label visually but keeps it for screen readers. */
+/* 13. SMALL UTILITY */
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -406,8 +385,7 @@ footer p {
 }
 
 
-/* 14. SMALL SCREENS (600px or narrower)
-   The form controls stack vertically and spacing shrinks. */
+/* 14. SMALL SCREENS  */
 @media (max-width: 600px) {
   header {
     padding: 22px 0;
