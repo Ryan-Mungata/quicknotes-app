@@ -1,0 +1,444 @@
+/* ==========================================================
+   DownNote - style.css
+   Take and Store notes faster, easily and conveniently.
+   ========================================================== */
+
+
+/* 1. RESET
+   border-box means width includes padding and border,
+   so boxes never end up wider than you expect. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+/* 2. COLOURS (CSS variables)
+   Every colour lives here. The rest of the file uses var(--name).
+   The dark theme (next block) only redefines these variables. */
+:root {
+  color-scheme: light;
+
+  --bg: #f4f5fb;
+  --surface: #ffffff;
+  --note-bg: #fafaff;
+  --text: #1b1d2a;
+  --muted: #5f6480;
+  --border: #e1e3ef;
+
+  --brand: #5b5bd6;
+  --brand-hover: #4646b8;
+  --brand-contrast: #ffffff;
+  --header-start: #4f46e5;
+  --header-end: #7c3aed;
+
+  --danger: #c62828;
+  --danger-contrast: #ffffff;
+
+  /* one colour per category */
+  --personal: #0f8f7e;
+  --work: #9b1c31;
+  --study: #2563eb;
+
+  --shadow: 0 6px 20px rgba(27, 29, 42, 0.07);
+}
+
+/* 3. DARK THEME
+   JavaScript adds the class "dark" to the <html> element.
+   Same variable names, new values. */
+:root.dark {
+  color-scheme: dark;
+
+  --bg: #0e1018;
+  --surface: #171a26;
+  --note-bg: #1c2030;
+  --text: #eceefa;
+  --muted: #9aa1c0;
+  --border: #2b3047;
+
+  --brand: #8c8cff;
+  --brand-hover: #a8a8ff;
+  --brand-contrast: #0f1024;
+  --header-start: #1e1b4b;
+  --header-end: #312e81;
+
+  --danger: #ff8080;
+  --danger-contrast: #2a0a0a;
+
+  --personal: #2dd4bf;
+  --work: #f2788c;
+  --study: #6aa8ff;
+
+  --shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+
+/* 4. BODY
+   Flex column + min-height keeps the footer at the bottom
+   of the screen even when there are no notes. */
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--text);
+  background-color: var(--bg);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+
+/* 5. HEADER */
+header {
+  position: sticky; /* stays at the top while you scroll */
+  top: 0;
+  z-index: 10;
+  background: linear-gradient(135deg, var(--header-start), var(--header-end));
+  color: #ffffff;
+  padding: 24px 0;
+}
+
+/* Same max-width and side padding as <main>, so the edges line up */
+.header-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: 1px;
+}
+
+header p {
+  margin: 4px 0 0 0;
+  opacity: 0.9;
+}
+
+
+/* 6. MAIN - a centred column, 700px at most */
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Section cards */
+section {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+section h2 {
+  margin: 0 0 16px 0;
+  font-size: 1.25rem;
+}
+
+
+/* 7. FORM (Flexbox)
+   The fields sit in a row; the text field grows to fill the space. */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-grow {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
+/* In the search toolbar the search box can shrink to make room for the button */
+.toolbar .field-grow {
+  flex: 1 1 0;
+}
+
+label {
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+input,
+select {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--text);
+  background-color: var(--bg);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 30%, transparent);
+}
+
+/* Keyboard users get a clear outline on buttons */
+button:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 2px;
+}
+
+
+/* 8. BUTTONS
+   transition makes the hover change smooth. */
+button {
+  min-height: 46px;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--brand-contrast);
+  background-color: var(--brand);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, transform 0.1s;
+}
+
+/* Visible hover style (not applied to disabled buttons) */
+button:hover:not(:disabled) {
+  background-color: var(--brand-hover);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Outlined red button (Clear all and Delete) */
+.btn-danger {
+  color: var(--danger);
+  background-color: transparent;
+  border: 1px solid var(--danger);
+}
+
+button.btn-danger:hover:not(:disabled) {
+  color: var(--danger-contrast);
+  background-color: var(--danger);
+}
+
+.delete-btn {
+  min-height: 34px;
+  padding: 4px 14px;
+  font-size: 0.85rem;
+  margin-left: auto;
+}
+
+/* The light/dark switch in the header */
+.theme-toggle {
+  min-height: 40px;
+  padding: 6px 16px;
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+button.theme-toggle:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.32);
+}
+
+.theme-toggle:focus-visible {
+  outline-color: #ffffff;
+}
+
+
+/* 9. ERROR MESSAGE
+   :empty hides the paragraph while it has no text. */
+#error-message {
+  margin: 12px 0 0 0;
+  font-weight: 600;
+  color: var(--danger);
+}
+
+#error-message:empty {
+  display: none;
+}
+
+
+/* 10. NOTE COUNT AND NOTE CARDS */
+#note-count {
+  margin: 16px 0 12px 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+#notes-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Each note is a card: padding, border, border-radius and margin (gap) */
+.note-card {
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--cat);
+  border-radius: 12px;
+  background-color: var(--note-bg);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.note-text {
+  margin: 0 0 10px 0;
+  font-size: 1.05rem;
+  overflow-wrap: anywhere;
+}
+
+.note-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.note-date {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* Message shown when the list is empty or a search finds nothing */
+.empty-message {
+  padding: 24px 12px;
+  text-align: center;
+  color: var(--muted);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+}
+
+
+/* 11. CATEGORY STYLES
+   Each category class sets --cat. The card's left border
+   and the little label both use it. */
+.category-personal {
+  --cat: var(--personal);
+}
+
+.category-work {
+  --cat: var(--work);
+}
+
+.category-study {
+  --cat: var(--study);
+}
+
+.category-badge {
+  padding: 2px 10px;
+  border: 1px solid var(--cat);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--cat);
+  background-color: color-mix(in srgb, var(--cat) 12%, transparent);
+}
+
+
+/* 12. FOOTER */
+footer {
+  padding: 24px 16px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+footer p {
+  margin: 4px 0;
+}
+
+
+/* 13. SMALL UTILITY
+   Hides the search label visually but keeps it for screen readers. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+
+/* 14. SMALL SCREENS (600px or narrower)
+   The form controls stack vertically and spacing shrinks. */
+@media (max-width: 600px) {
+  header {
+    padding: 22px 0;
+  }
+
+  .header-inner {
+    padding: 0 12px;
+  }
+
+  header h1 {
+    font-size: 1.6rem;
+  }
+
+  header p {
+    font-size: 0.9rem;
+  }
+
+  main {
+    padding: 16px 12px;
+  }
+
+  section {
+    padding: 18px;
+  }
+
+  form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  form .field-grow {
+    flex: none;
+  }
+}
